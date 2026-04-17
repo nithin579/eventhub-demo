@@ -67,5 +67,9 @@ def get_events():
     response = supabase.table('events').select("*").execute()
     return jsonify(response.data)
 
+@app.route('/admin')
+def admin():
+    return render_template('admin_login.html')
+
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=int(os.environ.get("PORT", 5000)))
