@@ -1,5 +1,5 @@
 import os
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, render_template
 from flask_mail import Mail, Message
 from dotenv import load_dotenv
 from flask_cors import CORS
@@ -24,7 +24,7 @@ supabase: Client = create_client(url, key)
 
 @app.route("/")
 def home():
-    return "EventHub Backend Running"
+    return render_template('index.html')
 
 @app.route("/subscribe", methods=["POST"])
 def subscribe():
