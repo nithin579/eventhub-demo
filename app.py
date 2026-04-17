@@ -112,37 +112,25 @@ def event_details():
 
 @app.route("/dashboard")
 def dashboard():
-    if "admin" in session:
-        return render_template("admin_dashboard.html")
-    else:
-        return redirect(url_for("admin"))
+    if not session.get("admin"):
+        return redirect("/admin")
+    return render_template("admin_dashboard.html")
 
 # ===== Admin Logic =====
 @app.route("/login", methods=["POST"])
 def login():
-    username = request.form.get("username", "").strip()
-    password = request.form.get("password", "").strip()
-    if not username or not password:
-        flash("Username and password are required")
-        return redirect(url_for("admin"))
-    try:
-        res = supabase.table("admin_username_pass").select("*").eq("username", username).eq("password", password).execute()
-        admin_user = res.data
-        if admin_user and len(admin_user) > 0:
-            session["admin"] = username
-            return redirect(url_for("dashboard"))
-        else:
-            flash("Invalid Username or Password")
-            return redirect(url_for("admin"))
-    except Exception as e:
-        print(f"API error during login: {e}")
-        flash("An error occurred during login. Please try again.")
+    data = request.form
+    if data.get('username') == "admin" and data.get('password') == "admin":
+        session['admin'] = True
+        return redirect('/dashboard')
+    else:
+        flash("Invalid Username or Password")
         return redirect(url_for("admin"))
 
 @app.route("/logout")
 def logout():
-    session.pop("admin", None)
-    return redirect(url_for("admin"))
+    session.pop('admin', None)
+    return redirect('/admin')
 
 # ===== Public API Routes =====
 @app.route("/subscribe", methods=["POST"])
