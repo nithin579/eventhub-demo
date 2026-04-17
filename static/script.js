@@ -362,7 +362,7 @@ window.addEvent = async function(e) {
     const eventId = document.getElementById('event-id').value;
     const method = eventId ? 'PUT' : 'POST';
     // Note: Currently handling POST specifically to /add-event to match request
-    const url = eventId ? `/api/events/${eventId}` : 'http://127.0.0.1:5000/add-event';
+    const url = eventId ? `/api/events/${eventId}` : '/add-event';
 
     try {
         if (!eventId) {
@@ -425,7 +425,7 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 async function loadEvents() {
-  const res = await fetch("http://127.0.0.1:5000/get-events");
+  const res = await fetch("/get-events");
   const events = await res.json();
 
   const container = document.getElementById("events-container");
