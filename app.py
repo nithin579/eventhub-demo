@@ -432,7 +432,20 @@ def update_credentials():
 
 @app.route("/test")
 def test_route():
-    return jsonify({"success": True, "message": "Backend and Supabase are successfully connected with the Secret Key!"})
+    try:
+        res = supabase.table("admin_username_pass").select("*").execute()
+        return jsonify({
+            "success": True, 
+            "key_start": str(os.getenv("SUPABASE_KEY"))[:5] if os.getenv("SUPABASE_KEY") else "None", 
+            "data": res.data
+        })
+    except Exception as e:
+        import traceback
+        return jsonify({
+            "error": str(e), 
+            "trace": traceback.format_exc(),
+            "key_start": str(os.getenv("SUPABASE_KEY"))[:5] if os.getenv("SUPABASE_KEY") else "None"
+        })
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=int(os.environ.get("PORT", 5000)))
