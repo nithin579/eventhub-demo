@@ -444,8 +444,7 @@ def test_route():
         return jsonify({
             "error": str(e), 
             "trace": traceback.format_exc(),
-            "key_start": str(os.getenv("SUPABASE_KEY"))[:5] if os.getenv("SUPABASE_KEY") else "None",
-            "key_len": len(str(os.getenv("SUPABASE_KEY"))) if os.getenv("SUPABASE_KEY") else 0
+            "key_start": str(os.getenv("SUPABASE_KEY"))[:5] if os.getenv("SUPABASE_KEY") else "None"
         })
 
 if __name__ == "__main__":
